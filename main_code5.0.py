@@ -117,6 +117,7 @@ ak = 0
 al = 0
 am = 0
 
+
 def grafiekplotten():
     plt.figure(figsize=(5, 5))
     plt.plot([columxaarde], [columyaarde], 'ro', color='blue', markersize=2.5)
@@ -207,34 +208,30 @@ aarde = verplaatsing(vx_aarde1, vy_aarde1, x_aarde1, y_aarde1)
 mars = verplaatsing(vx_mars1, vy_mars1, x_mars1, y_mars1)
 satelliet = verplaatsing(vx_satelliet1, vy_satelliet1, x_satelliet1, y_satelliet1)
 
-
-for verschillendegraden in range(40,52,1):
+for verschillendegraden in range(30, 40, 1):
     gradenvertrekvoordesatelliet = verschillendegraden
-    for aantalkerentesten in range(4800,5600,50):
+    for aantalkerentesten in range(5000, 6000, 10):
         print(f'Welke zitten we: {(aantalkerentesten - 2000) / 50}')
         extrasnelheidvoordesatelliet = aantalkerentesten
 
         if am == 5:
-            print(debestesnelheid)
-            print(min_min_afstandradiusmarssate)
-            print(gradenvertrekvoordesatelliet)
+            print(f'debestesnelheid:{debestesnelheid}')
+            print(f'min_min_afstandradiusmarssate: {min_min_afstandradiusmarssate}')
+            print(f'gradenvertrekvoordesatelliet: {gradenvertrekvoordesatelliet}')
             print('hij is 5 keer niet verbeterd')
             grafiekplotten()
 
         if min_afstandradiusmarssate < 0:
             min_afstandradiusmarssate = min_afstandradiusmarssate * -1
 
-
-
         if min_min_afstandradiusmarssate > min_afstandradiusmarssate:
             min_min_afstandradiusmarssate = min_afstandradiusmarssate
             debestesnelheid = aantalkerentesten
-            print(f'debestesnelheid{debestesnelheid}')
-            print(f'gradenvertrekvoordesatelliet{gradenvertrekvoordesatelliet}')
+            print(debestesnelheid)
             print(min_min_afstandradiusmarssate / 1E8)
             am = 0
         else:
-            am +=1
+            am += 1
 
         # Marsvoor
         MarsVoor = 1
@@ -311,7 +308,6 @@ for verschillendegraden in range(40,52,1):
         mars = verplaatsing(vx_mars1, vy_mars1, x_mars1, y_mars1)
         satelliet = verplaatsing(vx_satelliet1, vy_satelliet1, x_satelliet1, y_satelliet1)
 
-
         for WOPPA in range(200000):
             satelliet.deverplaasting()
             aarde.deverplaasting()
@@ -329,7 +325,8 @@ for verschillendegraden in range(40,52,1):
                 break
 
             r_aarde_mars = math.sqrt((aarde.Xpos - mars.Xpos) ** 2 + (aarde.Ypos - mars.Ypos) ** 2)
-            dehoekniettegroot = (aarde.r_zon ** 2 + mars.r_zon ** 2 - r_aarde_mars ** 2) / (2 * aarde.r_zon * mars.r_zon)
+            dehoekniettegroot = (aarde.r_zon ** 2 + mars.r_zon ** 2 - r_aarde_mars ** 2) / (
+                        2 * aarde.r_zon * mars.r_zon)
 
             if dehoekniettegroot > 1:
                 dehoekniettegroot = 1
@@ -341,7 +338,7 @@ for verschillendegraden in range(40,52,1):
             hoekaardemars = (hoekaardemars * 180) / math.pi
 
             dehoekniettegroot2 = (satelliet.r_aarde ** 2 + aarde.r_zon ** 2 - satelliet.r_zon ** 2) / (
-                        2 * aarde.r_zon * satelliet.r_aarde)
+                    2 * aarde.r_zon * satelliet.r_aarde)
 
             if dehoekniettegroot2 >= 1:
                 dehoekniettegroot2 = 1
@@ -353,7 +350,6 @@ for verschillendegraden in range(40,52,1):
 
             hoekaardesatelliet = (hoekaardesatelliet * 180 / math.pi)
 
-
             if r_satelliet_mars < r_satelliet_mars_max and i > 0:
                 r_satelliet_mars_max = r_satelliet_mars
 
@@ -363,11 +359,8 @@ for verschillendegraden in range(40,52,1):
                 if afstandradiusmarssate < min_afstandradiusmarssate:
                     min_afstandradiusmarssate = afstandradiusmarssate
 
-
-
             verschilv = satelliet.v - aarde.v
             satellietbuiten = satelliet.r_zon - aarde.r_zon
-
 
             # rondje aarde
             if aarde.vy > -20 and aarde.vy < 20 and aarde.vx > 0:
@@ -404,6 +397,12 @@ for verschillendegraden in range(40,52,1):
             if hoekaardemars > 179.9:
                 MarsVoor = 1
 
+            if i > 0:
+                satelliet.ay_aarde = 0
+                satelliet.ax_aarde = 0
+
+
+
             if hoekaardemars > (gradenvertrekvoordesatelliet + 1.9) and hoekaardemars < (
                     gradenvertrekvoordesatelliet + 2.1) and S == 0 and MarsVoor == 1:
                 xpos1 = satelliet.Xpos
@@ -415,34 +414,34 @@ for verschillendegraden in range(40,52,1):
                     gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
                 if MarsVoor == 1 and hoekaardesatelliet < 180 and hoekaardesatelliet > 150 and satellietbuiten > 0:
                     extrav = extrasnelheidvoordesatelliet
-                    #print(f'extrav: {extrav}')
-                    #print(f'hoekaardesatelliet: {hoekaardesatelliet}')
+                    # print(f'extrav: {extrav}')
+                    # print(f'hoekaardesatelliet: {hoekaardesatelliet}')
                     xpos2 = satelliet.Xpos
                     ypos2 = satelliet.Ypos
 
                     xverander = xpos2 - xpos1
                     yverander = ypos2 - ypos1
-                    #print(f'xverander: {xverander}')
+                    # print(f'xverander: {xverander}')
 
                     totverander = math.sqrt(xverander ** 2 + yverander ** 2)
 
-                    #print(f'totverander: {totverander}')
-                    #print("iets")
+                    # print(f'totverander: {totverander}')
+                    # print("iets")
                     verhoudingx = xverander / totverander
                     verhoudingy = yverander / totverander
 
-                    #print(f'verhoudingx: {verhoudingx}')
-                    #print(f'verhoudingy: {verhoudingy}')
+                    # print(f'verhoudingx: {verhoudingx}')
+                    # print(f'verhoudingy: {verhoudingy}')
 
                     extravx = (extrav * verhoudingx)
                     extravy = (extrav * verhoudingy)
-                    #print(f'extravy: {extravy}')
-                    #print(f'extravx: {extravx}')
+                    # print(f'extravy: {extravy}')
+                    # print(f'extravx: {extravx}')
 
-                    #print(f'vx_satelliet: {vx_satelliet}')
+                    # print(f'vx_satelliet: {vx_satelliet}')
                     satelliet.vx = aarde.vx + extravx
                     satelliet.vy = aarde.vy + extravy
-                    #print(f'vx_satelliet: {vx_satelliet}')
+                    # print(f'vx_satelliet: {vx_satelliet}')
 
                     i += 1
 
