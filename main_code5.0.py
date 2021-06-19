@@ -208,20 +208,28 @@ aarde = verplaatsing(vx_aarde1, vy_aarde1, x_aarde1, y_aarde1)
 mars = verplaatsing(vx_mars1, vy_mars1, x_mars1, y_mars1)
 satelliet = verplaatsing(vx_satelliet1, vy_satelliet1, x_satelliet1, y_satelliet1)
 verschillendegraden = 30
+debestesnelheid = 0
+debestegraden = 0
 
 for nietwhoppa  in range(100):
     print(f'Welke zitten we: {nietwhoppa}')
     verschillendegraden += 0.1
     gradenvertrekvoordesatelliet = verschillendegraden
     for aantalkerentesten in range(5000, 6000, 10):
+        print(f'huidigegraden: {verschillendegraden}')
+        print(f'huidigesnelheid: {aantalkerentesten}')
+        print(f'debestesnelheid:{debestesnelheid}')
+        print(f'min_min_afstandradiusmarssate: {min_min_afstandradiusmarssate}')
+        print(f'debeste graden: {debestegraden}')
 
         extrasnelheidvoordesatelliet = aantalkerentesten
 
         if am == 5:
-            print(f'debestesnelheid:{debestesnelheid}')
+            print('hij is 5 keer niet verbeterd')
+            print(f'debestesnelheid: {debestesnelheid}')
             print(f'min_min_afstandradiusmarssate: {min_min_afstandradiusmarssate}')
             print(f'gradenvertrekvoordesatelliet: {gradenvertrekvoordesatelliet}')
-            print('hij is 5 keer niet verbeterd')
+
             grafiekplotten()
 
         if min_afstandradiusmarssate < 0:
@@ -230,8 +238,9 @@ for nietwhoppa  in range(100):
         if min_min_afstandradiusmarssate > min_afstandradiusmarssate:
             min_min_afstandradiusmarssate = min_afstandradiusmarssate
             debestesnelheid = aantalkerentesten
-            print(debestesnelheid)
-            print(min_min_afstandradiusmarssate / 1E8)
+            debestegraden = verschillendegraden
+            print(f'De nieuwe beste snelheid op dit moment is: {debestesnelheid}')
+            print(f'De nieuwe minste afstand tot mars op schaal: {min_min_afstandradiusmarssate / 1E8}')
             am = 0
         else:
             am += 1
@@ -415,7 +424,7 @@ for nietwhoppa  in range(100):
 
             if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (
                     gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
-                if MarsVoor == 1 and hoekaardesatelliet < 180 and hoekaardesatelliet > 150 and satellietbuiten > 0:
+                if MarsVoor == 1 and satelliet.vx < (aarde.vx + (aarde.vx/5)) and satelliet.vx > (aarde.vx - (aarde.vx/5)) and satelliet.vy < (aarde.vy + (aarde.vy/5)) and satelliet.vy > (aarde.vy - (aarde.vy/5)) and satellietbuiten > 0:
                     extrav = extrasnelheidvoordesatelliet
                     # print(f'extrav: {extrav}')
                     # print(f'hoekaardesatelliet: {hoekaardesatelliet}')
@@ -553,7 +562,7 @@ for nietwhoppa  in range(100):
 
             if keyboard.is_pressed('Up') == 1:
                 print("grafiekkenren")
-                print(WOPPA)
+                print(f'hoe ver we zijn in het model {WOPPA}')
                 grafiekplotten()
 
 
