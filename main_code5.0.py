@@ -258,6 +258,7 @@ for nietwhoppa  in range(100):
         v_extra = 11011
         r_satelliet_mars_max = 9999999999999999999999
         min_afstandradiusmarssate = 999999999999999999999
+        satellietaardeverschil = 0
 
         columysatelliet = []
         columxsatelliet = []
@@ -371,7 +372,7 @@ for nietwhoppa  in range(100):
                 if afstandradiusmarssate < min_afstandradiusmarssate:
                     min_afstandradiusmarssate = afstandradiusmarssate
 
-            verschilv = satelliet.v - aarde.v
+            satellietaardeverschil = aarde.v - satelliet.v
             satellietbuiten = satelliet.r_zon - aarde.r_zon
 
             # rondje aarde
@@ -414,7 +415,6 @@ for nietwhoppa  in range(100):
                 satelliet.ax_aarde = 0
 
 
-
             if hoekaardemars > (gradenvertrekvoordesatelliet + 1.9) and hoekaardemars < (
                     gradenvertrekvoordesatelliet + 2.1) and S == 0 and MarsVoor == 1:
                 xpos1 = satelliet.Xpos
@@ -422,9 +422,8 @@ for nietwhoppa  in range(100):
                 S = 1
             # if satellietbuiten > 0:
 
-            if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (
-                    gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
-                if MarsVoor == 1 and satelliet.vx < (aarde.vx + (aarde.vx/5)) and satelliet.vx > (aarde.vx - (aarde.vx/5)) and satelliet.vy < (aarde.vy + (aarde.vy/5)) and satelliet.vy > (aarde.vy - (aarde.vy/5)) and satellietbuiten > 0:
+            if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
+                if MarsVoor == 1 and satellietaardeverschil < (aarde.v / 10) and satellietaardeverschil > -(aarde.v / 10)  and satellietbuiten > 0:
                     extrav = extrasnelheidvoordesatelliet
                     # print(f'extrav: {extrav}')
                     # print(f'hoekaardesatelliet: {hoekaardesatelliet}')
@@ -564,5 +563,3 @@ for nietwhoppa  in range(100):
                 print("grafiekkenren")
                 print(f'hoe ver we zijn in het model {WOPPA}')
                 grafiekplotten()
-
-
