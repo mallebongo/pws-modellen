@@ -207,11 +207,14 @@ class verplaatsing:
 aarde = verplaatsing(vx_aarde1, vy_aarde1, x_aarde1, y_aarde1)
 mars = verplaatsing(vx_mars1, vy_mars1, x_mars1, y_mars1)
 satelliet = verplaatsing(vx_satelliet1, vy_satelliet1, x_satelliet1, y_satelliet1)
+verschillendegraden = 30
 
-for verschillendegraden in range(30, 40, 1):
+for nietwhoppa  in range(100):
+    print(f'Welke zitten we: {nietwhoppa}')
+    verschillendegraden += 0.1
     gradenvertrekvoordesatelliet = verschillendegraden
     for aantalkerentesten in range(5000, 6000, 10):
-        print(f'Welke zitten we: {(aantalkerentesten - 2000) / 50}')
+
         extrasnelheidvoordesatelliet = aantalkerentesten
 
         if am == 5:
