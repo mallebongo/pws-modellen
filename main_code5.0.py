@@ -120,12 +120,14 @@ am = 0
 
 def grafiekplotten():
     plt.figure(figsize=(5, 5))
-    plt.plot([columxaarde], [columyaarde], 'ro', color='blue', markersize=2.5)
+    #plt.plot([columxaarde], [columyaarde], 'ro', color='blue', markersize=2.5)
     plt.plot([columxmars], [columymars], 'ro', color='red', markersize=2.5)
     plt.plot([columxmarsnalancering], [columymarsnalancering], 'ro', color='green', markersize=2.5)
-    plt.plot([columxsatelliet], [columysatelliet], 'ro', color='black', markersize=2)
-    plt.plot([columxsatellietlancering], [columysatellietlancering], 'ro', color='orange', markersize=5)
-    plt.plot([columxsatelliet1epos], [columysatelliet1epos], 'ro', color='green', markersize=5)
+    #plt.plot([columxsatelliet], [columysatelliet], 'ro', color='black', markersize=2)
+    #plt.plot([columxsatelliet1epos], [columysatelliet1epos], 'ro', color='green', markersize=5)
+    #plt.plot([columxsatellietlancering], [columysatellietlancering], 'ro', color='orange', markersize=6)
+    plt.plot([satellietxlanceering], [satellietylanceering], 'ro', color='orange', markersize=6)
+    plt.plot([aardexlanceering], [aardeylanceering], 'ro', color='purple', markersize=10)
     plt.plot([0], [0], 'ro', color='yellow', markersize=20)
     plt.axis([-500, 500, -500, 500])
     plt.show()
@@ -317,6 +319,7 @@ for nietwhoppa  in range(100):
         ak = 0
         al = 0
         am = 0
+        an = 0
 
         aarde = verplaatsing(vx_aarde1, vy_aarde1, x_aarde1, y_aarde1)
         mars = verplaatsing(vx_mars1, vy_mars1, x_mars1, y_mars1)
@@ -328,7 +331,7 @@ for nietwhoppa  in range(100):
             mars.deverplaasting()
             if satelliet.r_aarde < r_aarde:
                 print('je hebt de aarde geraakt')
-                break
+                grafiekplotten()
 
             if satelliet.r_zon < r_zon:
                 print('je hebt de zon geraakt')
@@ -416,13 +419,18 @@ for nietwhoppa  in range(100):
                 satelliet.ax_aarde = 0
 
 
-            if hoekaardemars > (gradenvertrekvoordesatelliet + 1.9) and hoekaardemars < (
-                    gradenvertrekvoordesatelliet + 2.1) and S == 0 and MarsVoor == 1:
-                xpos1 = satelliet.Xpos
-                ypos1 = satelliet.Ypos
-                S = 1
-                print(f'satellietaardeverschil : {satellietaardeverschil}')
-                print(f'aarde.v : {aarde.v / 10}')
+            if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (gradenvertrekvoordesatelliet + 1.9) and S == 0:
+                if MarsVoor == 1 and satellietbuiten > 0:
+                    if satellietaardeverschil < 1000 and satellietaardeverschil > -1000 and satellietaardeverschil < satellietaardeverschilmin:
+                        satellietaardeverschilmin = satellietaardeverschil
+                        print(f'satellietaardeverschilmin : {satellietaardeverschilmin}')
+                        print(f'satellietbuiten : {satellietbuiten}')
+                        if MarsVoor == 1 and satellietaardeverschilmin < 100 and satellietbuiten > 0:
+                            xpos1 = satelliet.Xpos
+                            ypos1 = satelliet.Ypos
+                            S = 1
+                            print(f'satellietaardeverschil : {satellietaardeverschil}')
+                            print(f'aarde.v : {aarde.v / 10}')
 
             # if satellietbuiten > 0:
 
@@ -434,16 +442,56 @@ for nietwhoppa  in range(100):
                     if satellietaardeverschil < 1000 and satellietaardeverschil > -1000 and satellietaardeverschil < satellietaardeverschilmin:
                         satellietaardeverschilmin = satellietaardeverschil
                         print(f'satellietaardeverschilmin : {satellietaardeverschilmin}')
-                        if satellietaardeverschilmin < 600:
-                            ap = 1
+                        print(f'satellietbuiten : {satellietbuiten}')
+                        if MarsVoor == 1 and satellietaardeverschilmin < 60 and satellietbuiten > 0:
+                            extrav = extrasnelheidvoordesatelliet
+                            print(f'extrav: {extrav}')
+                            xpos2 = satelliet.Xpos
+                            ypos2 = satelliet.Ypos
+
+                            xverander = xpos2 - xpos1
+                            yverander = ypos2 - ypos1
+                            # print(f'xverander: {xverander}')
+
+                            totverander = math.sqrt(xverander ** 2 + yverander ** 2)
+
+                            # print(f'totverander: {totverander}')
+                            # print("iets")
+                            verhoudingx = xverander / totverander
+                            verhoudingy = yverander / totverander
+
+                            # print(f'verhoudingx: {verhoudingx}')
+                            # print(f'verhoudingy: {verhoudingy}')
+
+                            extravx = (extrav * verhoudingx)
+                            extravy = (extrav * verhoudingy)
+                            # print(f'extravy: {extravy}')
+                            # print(f'extravx: {extravx}')
+
+                            # print(f'vx_satelliet: {vx_satelliet}')
+                            satelliet.vx = aarde.vx + extravx
+                            satelliet.vy = aarde.vy + extravy
+                            # print(f'vx_satelliet: {vx_satelliet}')
+                            aardexlanceering = aarde.Xpos / schaal
+                            aardeylanceering = aarde.Ypos / schaal
+
+                            satellietxlanceering = satelliet.Xpos / schaal
+                            satellietylanceering = satelliet.Ypos / schaal
                             grafiekplotten()
+                            dt = 3.6
 
+                            i += 1
+                        q += 1
 
+            if i == 1:
+                an += 1
+                print(an)
 
             if z == 0 and satelliet.r_mars < 1.1E8:
                 xpos3 = mars.Xpos
                 ypos3 = mars.Ypos
                 z = z + 1
+
 
             v_extra2 = mars.v - 2500
 
@@ -502,6 +550,15 @@ for nietwhoppa  in range(100):
             t = t + dt
 
             # grafiek shit
+            if S > 0:
+                if i == 0:
+                    columysatelliet1epos.insert(ad, (satelliet.Ypos / schaal))
+                    columxsatelliet1epos.insert(ad, (satelliet.Xpos / schaal))
+                    ad += 1
+                else:
+                    columysatellietlancering.insert(ac, satelliet.Ypos / schaal)
+                    columxsatellietlancering.insert(ac, satelliet.Xpos / schaal)
+                    ac += 1
 
             B += 1
             if B == 50:
@@ -516,15 +573,6 @@ for nietwhoppa  in range(100):
                     af += 1
                     ag = 0
 
-                    if i > 0:
-                        columysatellietlancering.insert(ac, satelliet.Ypos / schaal)
-                        columxsatellietlancering.insert(ac, satelliet.Xpos / schaal)
-                        ac += 1
-
-                if S > 0 and i < 1:
-                    columysatelliet1epos.insert(ad, (satelliet.Ypos / schaal))
-                    columxsatelliet1epos.insert(ad, (satelliet.Xpos / schaal))
-                    ad += 1
 
                 if i > 0:
                     columxmarsnalancering.insert(o, mars.Xpos / schaal)
