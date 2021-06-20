@@ -258,6 +258,8 @@ for nietwhoppa  in range(100):
         v_extra = 11011
         r_satelliet_mars_max = 9999999999999999999999
         min_afstandradiusmarssate = 999999999999999999999
+        satellietaardeverschil = 0
+        satellietaardeverschilmin = 99999999999999999999
 
         columysatelliet = []
         columxsatelliet = []
@@ -320,7 +322,7 @@ for nietwhoppa  in range(100):
         mars = verplaatsing(vx_mars1, vy_mars1, x_mars1, y_mars1)
         satelliet = verplaatsing(vx_satelliet1, vy_satelliet1, x_satelliet1, y_satelliet1)
 
-        for WOPPA in range(200000):
+        for WOPPA in range(1000000):
             satelliet.deverplaasting()
             aarde.deverplaasting()
             mars.deverplaasting()
@@ -371,7 +373,7 @@ for nietwhoppa  in range(100):
                 if afstandradiusmarssate < min_afstandradiusmarssate:
                     min_afstandradiusmarssate = afstandradiusmarssate
 
-            verschilv = satelliet.v - aarde.v
+            satellietaardeverschil = aarde.v - satelliet.v
             satellietbuiten = satelliet.r_zon - aarde.r_zon
 
             # rondje aarde
@@ -414,50 +416,29 @@ for nietwhoppa  in range(100):
                 satelliet.ax_aarde = 0
 
 
-
             if hoekaardemars > (gradenvertrekvoordesatelliet + 1.9) and hoekaardemars < (
                     gradenvertrekvoordesatelliet + 2.1) and S == 0 and MarsVoor == 1:
                 xpos1 = satelliet.Xpos
                 ypos1 = satelliet.Ypos
                 S = 1
+                print(f'satellietaardeverschil : {satellietaardeverschil}')
+                print(f'aarde.v : {aarde.v / 10}')
+
             # if satellietbuiten > 0:
 
-            if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (
-                    gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
-                if MarsVoor == 1 and satelliet.vx < (aarde.vx + (aarde.vx/5)) and satelliet.vx > (aarde.vx - (aarde.vx/5)) and satelliet.vy < (aarde.vy + (aarde.vy/5)) and satelliet.vy > (aarde.vy - (aarde.vy/5)) and satellietbuiten > 0:
-                    extrav = extrasnelheidvoordesatelliet
-                    # print(f'extrav: {extrav}')
-                    # print(f'hoekaardesatelliet: {hoekaardesatelliet}')
-                    xpos2 = satelliet.Xpos
-                    ypos2 = satelliet.Ypos
 
-                    xverander = xpos2 - xpos1
-                    yverander = ypos2 - ypos1
-                    # print(f'xverander: {xverander}')
 
-                    totverander = math.sqrt(xverander ** 2 + yverander ** 2)
 
-                    # print(f'totverander: {totverander}')
-                    # print("iets")
-                    verhoudingx = xverander / totverander
-                    verhoudingy = yverander / totverander
+            if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
+                if MarsVoor == 1 and satellietbuiten > 0:
+                    if satellietaardeverschil < 1000 and satellietaardeverschil > -1000 and satellietaardeverschil < satellietaardeverschilmin:
+                        satellietaardeverschilmin = satellietaardeverschil
+                        print(f'satellietaardeverschilmin : {satellietaardeverschilmin}')
+                        if satellietaardeverschilmin < 600:
+                            ap = 1
+                            grafiekplotten()
 
-                    # print(f'verhoudingx: {verhoudingx}')
-                    # print(f'verhoudingy: {verhoudingy}')
 
-                    extravx = (extrav * verhoudingx)
-                    extravy = (extrav * verhoudingy)
-                    # print(f'extravy: {extravy}')
-                    # print(f'extravx: {extravx}')
-
-                    # print(f'vx_satelliet: {vx_satelliet}')
-                    satelliet.vx = aarde.vx + extravx
-                    satelliet.vy = aarde.vy + extravy
-                    # print(f'vx_satelliet: {vx_satelliet}')
-
-                    i += 1
-
-            q += 1
 
             if z == 0 and satelliet.r_mars < 1.1E8:
                 xpos3 = mars.Xpos
@@ -564,5 +545,3 @@ for nietwhoppa  in range(100):
                 print("grafiekkenren")
                 print(f'hoe ver we zijn in het model {WOPPA}')
                 grafiekplotten()
-
-
