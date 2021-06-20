@@ -418,32 +418,22 @@ for nietwhoppa  in range(100):
                 satelliet.ay_aarde = 0
                 satelliet.ax_aarde = 0
 
+            lijnzonaarde = (aarde.Ypos / aarde.Xpos)
+            satellietoplijnzonaarde = lijnzonaarde * satelliet.Xpos
+            klopthet = satelliet.Ypos - satellietoplijnzonaarde
+
+
 
             if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (gradenvertrekvoordesatelliet + 1.9) and S == 0:
                 if MarsVoor == 1 and satellietbuiten > 0:
-                    if satellietaardeverschil < 1000 and satellietaardeverschil > -1000 and satellietaardeverschil < satellietaardeverschilmin:
-                        satellietaardeverschilmin = satellietaardeverschil
-                        print(f'satellietaardeverschilmin : {satellietaardeverschilmin}')
-                        print(f'satellietbuiten : {satellietbuiten}')
-                        if MarsVoor == 1 and satellietaardeverschilmin < 100 and satellietbuiten > 0:
+                        if MarsVoor == 1 and satellietbuiten > 0:
                             xpos1 = satelliet.Xpos
                             ypos1 = satelliet.Ypos
-                            S = 1
-                            print(f'satellietaardeverschil : {satellietaardeverschil}')
-                            print(f'aarde.v : {aarde.v / 10}')
-
-            # if satellietbuiten > 0:
-
-
 
 
             if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
-                if MarsVoor == 1 and satellietbuiten > 0:
-                    if satellietaardeverschil < 1000 and satellietaardeverschil > -1000 and satellietaardeverschil < satellietaardeverschilmin:
-                        satellietaardeverschilmin = satellietaardeverschil
-                        print(f'satellietaardeverschilmin : {satellietaardeverschilmin}')
-                        print(f'satellietbuiten : {satellietbuiten}')
-                        if MarsVoor == 1 and satellietaardeverschilmin < 60 and satellietbuiten > 0:
+                print(klopthet)
+                if MarsVoor == 1 and klopthet < 1000000 and klopthet > -100000 and satellietbuiten > 0:
                             extrav = extrasnelheidvoordesatelliet
                             print(f'extrav: {extrav}')
                             xpos2 = satelliet.Xpos
@@ -481,7 +471,7 @@ for nietwhoppa  in range(100):
                             dt = 3.6
 
                             i += 1
-                        q += 1
+                            q += 1
 
             if i == 1:
                 an += 1
