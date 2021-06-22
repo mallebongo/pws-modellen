@@ -75,6 +75,10 @@ columsnelheidsatelliet = []
 columsatellietbuiten = []
 columxmarsnalancering = []
 columymarsnalancering = []
+satellietxlanceering = []
+satellietylanceering = []
+aardexlanceering = []
+aardeylanceering = []
 
 gradenvertrek = 0
 marsrondjejaar = 0
@@ -116,17 +120,18 @@ aj = 0
 ak = 0
 al = 0
 am = 0
-
+ao = 0
+ap = 0
 
 def grafiekplotten():
     plt.figure(figsize=(5, 5))
     #plt.plot([columxaarde], [columyaarde], 'ro', color='blue', markersize=2.5)
     plt.plot([columxmars], [columymars], 'ro', color='red', markersize=2.5)
     plt.plot([columxmarsnalancering], [columymarsnalancering], 'ro', color='green', markersize=2.5)
-    #plt.plot([columxsatelliet], [columysatelliet], 'ro', color='black', markersize=2)
-    #plt.plot([columxsatelliet1epos], [columysatelliet1epos], 'ro', color='green', markersize=5)
-    #plt.plot([columxsatellietlancering], [columysatellietlancering], 'ro', color='orange', markersize=6)
-    plt.plot([satellietxlanceering], [satellietylanceering], 'ro', color='orange', markersize=6)
+    plt.plot([columxsatelliet], [columysatelliet], 'ro', color='black', markersize=2)
+    plt.plot([columxsatelliet1epos], [columysatelliet1epos], 'ro', color='green', markersize=5)
+    plt.plot([columxsatellietlancering], [columysatellietlancering], 'ro', color='orange', markersize=6)
+    plt.plot([satellietxlanceering], [satellietylanceering], 'ro', color='red', markersize=6)
     plt.plot([aardexlanceering], [aardeylanceering], 'ro', color='purple', markersize=10)
     plt.plot([0], [0], 'ro', color='yellow', markersize=20)
     plt.axis([-500, 500, -500, 500])
@@ -262,6 +267,7 @@ for nietwhoppa  in range(100):
         min_afstandradiusmarssate = 999999999999999999999
         satellietaardeverschil = 0
         satellietaardeverschilmin = 99999999999999999999
+        minafssatlijn = 99999999999999999999
 
         columysatelliet = []
         columxsatelliet = []
@@ -320,6 +326,7 @@ for nietwhoppa  in range(100):
         al = 0
         am = 0
         an = 0
+        ao = 0
 
         aarde = verplaatsing(vx_aarde1, vy_aarde1, x_aarde1, y_aarde1)
         mars = verplaatsing(vx_mars1, vy_mars1, x_mars1, y_mars1)
@@ -418,10 +425,10 @@ for nietwhoppa  in range(100):
                 satelliet.ay_aarde = 0
                 satelliet.ax_aarde = 0
 
-            lijnzonaarde = (aarde.Ypos / aarde.Xpos)
-            satellietoplijnzonaarde = lijnzonaarde * satelliet.Xpos
-            klopthet = satelliet.Ypos - satellietoplijnzonaarde
+            xposvandichtsbijlijn = (satelliet.Ypos * aarde.Xpos * aarde.Ypos)/(aarde.Ypos ** 2 + aarde.Xpos ** 2) - (aarde.Xpos ** 2 * satelliet.Xpos) / (aarde.Ypos ** 2 + aarde.Xpos ** 2)
+            yposvandichtsbijlijn = aarde.Ypos / aarde.Xpos * xposvandichtsbijlijn
 
+            afstandvansatelliettotlijn = math.sqrt((satelliet.Xpos - xposvandichtsbijlijn) ** 2 + (satelliet.Ypos - yposvandichtsbijlijn) ** 2)
 
 
             if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (gradenvertrekvoordesatelliet + 1.9) and S == 0:
@@ -429,53 +436,52 @@ for nietwhoppa  in range(100):
                         if MarsVoor == 1 and satellietbuiten > 0:
                             xpos1 = satelliet.Xpos
                             ypos1 = satelliet.Ypos
+                            S = 1
 
 
             if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
-                print(klopthet)
-                if MarsVoor == 1 and klopthet < 1000000 and klopthet > -100000 and satellietbuiten > 0:
-                            extrav = extrasnelheidvoordesatelliet
-                            print(f'extrav: {extrav}')
-                            xpos2 = satelliet.Xpos
-                            ypos2 = satelliet.Ypos
+                if MarsVoor == 1 and satellietbuiten > 0:
+                    if afstandvansatelliettotlijn < minafssatlijn and S == 1:
+                        minafssatlijn = afstandvansatelliettotlijn
+                    else:
+                           extrav = extrasnelheidvoordesatelliet
+                           print(f'extrav: {extrav}')
+                           xpos2 = satelliet.Xpos
+                           ypos2 = satelliet.Ypos
+                           xverander = xpos2 - xpos1
+                           yverander = ypos2 - ypos1
+                           totverander = math.sqrt(xverander ** 2 + yverander ** 2)
+                           verhoudingx = xverander / totverander
+                           verhoudingy = yverander / totverander
+                           extravx = (extrav * verhoudingx)
+                           extravy = (extrav * verhoudingy)
+                           satelliet.vx = aarde.vx + extravx
+                           satelliet.vy = aarde.vy + extravy
+                           aardexlanceering = aarde.Xpos / schaal
+                           aardeylanceering = aarde.Ypos / schaal
+                           satellietxlanceering = satelliet.Xpos / schaal
+                           satellietylanceering = satelliet.Ypos / schaal
+                           i = 1
+                           q = 1
 
-                            xverander = xpos2 - xpos1
-                            yverander = ypos2 - ypos1
-                            # print(f'xverander: {xverander}')
+            if i == 1 and ao == 0:
+                eenxpos180 = satelliet.Xpos
+                eenypos180 = satelliet.Ypos
+                ao = 1
 
-                            totverander = math.sqrt(xverander ** 2 + yverander ** 2)
+            if i == 1 and ao == 1:
+                ap += 1
+                if ap == 2:
+                    tweexpos180 = satelliet.Xpos
+                    tweeypos180 = satelliet.Ypos
+                    richting180 = (tweeypos180 - eenypos180) / (tweexpos180 - eenxpos180)
+                    hoeklancering = math.tan(richting180)
+                    hoeklanceringdegrees = hoeklancering*180/math.pi
+                    ap = 0
 
-                            # print(f'totverander: {totverander}')
-                            # print("iets")
-                            verhoudingx = xverander / totverander
-                            verhoudingy = yverander / totverander
-
-                            # print(f'verhoudingx: {verhoudingx}')
-                            # print(f'verhoudingy: {verhoudingy}')
-
-                            extravx = (extrav * verhoudingx)
-                            extravy = (extrav * verhoudingy)
-                            # print(f'extravy: {extravy}')
-                            # print(f'extravx: {extravx}')
-
-                            # print(f'vx_satelliet: {vx_satelliet}')
-                            satelliet.vx = aarde.vx + extravx
-                            satelliet.vy = aarde.vy + extravy
-                            # print(f'vx_satelliet: {vx_satelliet}')
-                            aardexlanceering = aarde.Xpos / schaal
-                            aardeylanceering = aarde.Ypos / schaal
-
-                            satellietxlanceering = satelliet.Xpos / schaal
-                            satellietylanceering = satelliet.Ypos / schaal
-                            grafiekplotten()
-                            dt = 3.6
-
-                            i += 1
-                            q += 1
-
-            if i == 1:
-                an += 1
-                print(an)
+            if i == 1 and hoeklanceringdegrees > 90:
+               hoeklanderingdegrees = 180 - hoeklanceringdegrees
+               print(f'hoeklanceringdegrees:{hoeklanceringdegrees}')
 
             if z == 0 and satelliet.r_mars < 1.1E8:
                 xpos3 = mars.Xpos
@@ -540,15 +546,7 @@ for nietwhoppa  in range(100):
             t = t + dt
 
             # grafiek shit
-            if S > 0:
-                if i == 0:
-                    columysatelliet1epos.insert(ad, (satelliet.Ypos / schaal))
-                    columxsatelliet1epos.insert(ad, (satelliet.Xpos / schaal))
-                    ad += 1
-                else:
-                    columysatellietlancering.insert(ac, satelliet.Ypos / schaal)
-                    columxsatellietlancering.insert(ac, satelliet.Xpos / schaal)
-                    ac += 1
+
 
             B += 1
             if B == 50:
@@ -562,6 +560,16 @@ for nietwhoppa  in range(100):
                     columysatelliet.insert(af, satelliet.Ypos / schaal)
                     af += 1
                     ag = 0
+
+                if S > 0:
+                    if i == 0:
+                        columysatelliet1epos.insert(ad, (satelliet.Ypos / schaal))
+                        columxsatelliet1epos.insert(ad, (satelliet.Xpos / schaal))
+                        ad += 1
+                    else:
+                        columysatellietlancering.insert(ac, satelliet.Ypos / schaal)
+                        columxsatellietlancering.insert(ac, satelliet.Xpos / schaal)
+                        ac += 1
 
 
                 if i > 0:
