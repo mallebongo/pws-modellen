@@ -60,6 +60,7 @@ schaal = 1E9
 r_satelliet_mars_max = 9999999999999999999999
 min_afstandradiusmarssate = 999999999999999999999
 
+
 columysatelliet = []
 columxsatelliet = []
 columymars = []
@@ -76,47 +77,10 @@ columsatellietbuiten = []
 columxmarsnalancering = []
 columymarsnalancering = []
 
-gradenvertrek = 0
-marsrondjejaar = 0
-max_satellietbuiten = 0
-totaalextrav = 0
+gradenvertrek = marsrondjejaar = max_satellietbuiten = totaalextrav = 0
+
 # de = 0
-
-p = 0
-z = 0
-l = 0
-i = 0
-d = 0
-u = 0
-Q = 0
-j = 0
-Y = 0
-q = 0
-o = 0
-M = 0
-B = 0
-J = 0
-P = 0
-I = 0
-h = 0
-H = 0
-S = 0
-F = 0
-Z = 0
-aa = 0
-ab = 0
-ac = 0
-ad = 0
-ae = 0
-af = 0
-ag = 0
-ah = 0
-ai = 0
-aj = 0
-ak = 0
-al = 0
-am = 0
-
+p = z = l = i = d = u = Q = j = Y = q = o = M = B = J = P = I = h = H = S = F = Z = aa = ab = ac = ad = ae = af = ag = ah = ai = aj = ak = al = am = 0
 
 def grafiekplotten():
     plt.figure(figsize=(5, 5))
@@ -207,15 +171,15 @@ class verplaatsing:
 aarde = verplaatsing(vx_aarde1, vy_aarde1, x_aarde1, y_aarde1)
 mars = verplaatsing(vx_mars1, vy_mars1, x_mars1, y_mars1)
 satelliet = verplaatsing(vx_satelliet1, vy_satelliet1, x_satelliet1, y_satelliet1)
-verschillendegraden = 30
+verschillendegraden = 44.247510186590006
 debestesnelheid = 0
 debestegraden = 0
 
-for nietwhoppa  in range(100):
+for nietwhoppa  in range(20):
     print(f'Welke zitten we: {nietwhoppa}')
     verschillendegraden += 0.1
     gradenvertrekvoordesatelliet = verschillendegraden
-    for aantalkerentesten in range(5000, 6000, 10):
+    for aantalkerentesten in range(2600, 2900, 10):
         print(f'huidigegraden: {verschillendegraden}')
         print(f'huidigesnelheid: {aantalkerentesten}')
         print(f'debestesnelheid:{debestesnelheid}')
@@ -324,6 +288,13 @@ for nietwhoppa  in range(100):
             satelliet.deverplaasting()
             aarde.deverplaasting()
             mars.deverplaasting()
+
+
+
+            if i == 1:
+                satelliet.vx = satelliet.vx + -satelliet.ax_aarde * dt
+                satelliet.vy = satelliet.vy + -satelliet.ay_aarde * dt
+
             if satelliet.r_aarde < r_aarde:
                 print('je hebt de aarde geraakt')
                 break
@@ -413,8 +384,6 @@ for nietwhoppa  in range(100):
                 satelliet.ay_aarde = 0
                 satelliet.ax_aarde = 0
 
-
-
             if hoekaardemars > (gradenvertrekvoordesatelliet + 1.9) and hoekaardemars < (
                     gradenvertrekvoordesatelliet + 2.1) and S == 0 and MarsVoor == 1:
                 xpos1 = satelliet.Xpos
@@ -424,7 +393,7 @@ for nietwhoppa  in range(100):
 
             if hoekaardemars > (gradenvertrekvoordesatelliet - 1.9) and hoekaardemars < (
                     gradenvertrekvoordesatelliet + 1.9) and i == 0 and S == 1:
-                if MarsVoor == 1 and satelliet.vx < (aarde.vx + (aarde.vx/5)) and satelliet.vx > (aarde.vx - (aarde.vx/5)) and satelliet.vy < (aarde.vy + (aarde.vy/5)) and satelliet.vy > (aarde.vy - (aarde.vy/5)) and satellietbuiten > 0:
+                if MarsVoor == 1 and satellietbuiten > 0 and hoekaardesatelliet < 180 and hoekaardesatelliet > 150:
                     extrav = extrasnelheidvoordesatelliet
                     # print(f'extrav: {extrav}')
                     # print(f'hoekaardesatelliet: {hoekaardesatelliet}')
