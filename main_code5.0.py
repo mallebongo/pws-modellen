@@ -526,38 +526,36 @@ for nietwhoppa  in range(100):
             if B == 50:
 
                 columtijd.insert(o, t)
-                columsnelheidsatelliet.insert(o, satelliet.v)
-                columsatellietbuiten.insert(o, satellietbuiten)
+                columsnelheidsatelliet.append(satelliet.v)
+                columsatellietbuiten.append(satellietbuiten)
                 ag += 1
                 if ag == 10:
-                    columxsatelliet.insert(af, satelliet.Xpos / schaal)
-                    columysatelliet.insert(af, satelliet.Ypos / schaal)
-                    af += 1
+                    columxsatelliet.append(satelliet.Xpos / schaal)
+                    columysatelliet.append(satelliet.Ypos / schaal)
                     ag = 0
 
                     if i > 0:
-                        columysatellietlancering.insert(ac, satelliet.Ypos / schaal)
-                        columxsatellietlancering.insert(ac, satelliet.Xpos / schaal)
-                        ac += 1
+                        columysatellietlancering.append(satelliet.Ypos / schaal)
+                        columxsatellietlancering.append(satelliet.Xpos / schaal)
+
 
                 if S > 0 and i < 1:
-                    columysatelliet1epos.insert(ad, (satelliet.Ypos / schaal))
-                    columxsatelliet1epos.insert(ad, (satelliet.Xpos / schaal))
-                    ad += 1
+                    columysatelliet1epos.append(satelliet.Ypos / schaal)
+                    columxsatelliet1epos.append(satelliet.Xpos / schaal)
+
 
                 if i > 0:
-                    columxmarsnalancering.insert(o, mars.Xpos / schaal)
-                    columymarsnalancering.insert(o, mars.Ypos / schaal)
+                    columxmarsnalancering.append(mars.Xpos / schaal)
+                    columymarsnalancering.append(mars.Ypos / schaal)
 
                 if I == 0:
-                    columymars.insert(o, (mars.Ypos / schaal))
-                    columxmars.insert(o, (mars.Xpos / schaal))
+                    columymars.append(mars.Ypos / schaal)
+                    columxmars.append(mars.Xpos / schaal)
 
                 if Z == 0:
-                    columyaarde.insert(o, (aarde.Ypos / schaal))
-                    columxaarde.insert(o, (aarde.Xpos / schaal))
+                    columyaarde.append(aarde.Ypos / schaal)
+                    columxaarde.append(aarde.Xpos / schaal)
 
-                o += 1
                 B = 0
 
             if keyboard.is_pressed('Up') == 1:
